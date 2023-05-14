@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+    function MinutesToHours() {
+      const [amount, setAmount] = React.useState();
+      const [inverted, setInverted] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+      const reset = () => setAmount(0);
+
+      const onFlip = () => {
+        reset();
+        setInverted((current) => !inverted);
+      };
+
+      return (
+        <div>
+          <div>
+            <h3>Minutes To Hours</h3>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              value={inverted ? amount * 60 : amount}
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange}
+              disabled={inverted}
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              onChange={onChange}
+              value={inverted ? amount : Math.round(amount / 60)}
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              disabled={!inverted}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>
+            {inverted ? "Hours to Minutes" : "Minutes to Hours"}
+          </button>
+        </div>
+      );
+    }
+    function KmToMiles() {
+      return <h3>KM 2 M</h3>;
+    }
+    function App() {
+      const [index, setIndex] = React.useState("Minutes & Hours");
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+        console.log(index);
+      };
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <select value={index} onChange={onSelect}>
+            <option value="Minutes & Hours">Minutes & Hours</option>
+            <option value="Km & Miles">Km & Miles</option>
+          </select>
+          <hr />
+          {
+            // 자바스크립트 작성 가능
+            index === "Minutes & Hours" ? <MinutesToHours /> : <KmToMiles />
+            // 니꼬쌤은 코드를 이렇게 작성하셨는데 난 조금 더 깔끔하게 작성함함
+            //index === "Minutes & Hours" ? <MinutesToHours /> : null
+            //index === "Km & Miles" ? <KmToMiles /> : null
+          }
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
